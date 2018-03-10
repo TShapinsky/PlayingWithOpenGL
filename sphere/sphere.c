@@ -10,6 +10,9 @@ float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
 float x=0.0f,z=5.0f;
 
+GLfloat whiteSpecularMaterial[] = {0.5, 0.5, 0.5};
+GLfloat redDiffuseMaterial[] = {1.0, 0.0, 0.0};
+
 
 void display(void) {
 
@@ -19,7 +22,16 @@ void display(void) {
 		x+lx, 1.0f,  z+lz,
 		0.0f, 1.0f,  0.0f);
 
-    glColor3f(.5,.5,.5);
+
+    //Lights
+    GLfloat whiteDiffuseLight[] = {0.0, 1.0, 1.0};
+    GLfloat lightPosition[] = {0.0,0.0,1.0,1.0};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteDiffuseLight);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+
+    //Ground
+    glColor3f(.9,.9,.9);
     glBegin(GL_QUADS);
     glVertex3f(-100.0f,0.0f,-100.0f);
     glVertex3f( 100.0f,0.0f,-100.0f);
@@ -27,10 +39,14 @@ void display(void) {
     glVertex3f(-100.0f,0.0f, 100.0f);	
     glEnd();
 
-
+    //Objects
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, whiteSpecularMaterial);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, redDiffuseMaterial);
     glColor3f(1.0,0.0,0.0);
     glTranslatef(0.0,.25f, 0.0);
     glutSolidSphere(0.25f,20,20);
+
+    //Push Frame
     glutSwapBuffers();
 }
 
@@ -64,10 +80,16 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(300, 300);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Sphere");
-	glutDisplayFunc(display);
 	glutReshapeFunc(changeSize);
 
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_FLAT);
+
+	glutIdleFunc(display);
+	glutDisplayFunc(display);
 	glutMainLoop();
 	return 0;
 }
