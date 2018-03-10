@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
 
@@ -9,6 +10,8 @@ float angle=0.0;
 float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
 float x=0.0f,z=5.0f;
+
+float lightAngle = 0.0f;
 
 GLfloat whiteSpecularMaterial[] = {0.5, 0.5, 0.5};
 GLfloat redDiffuseMaterial[] = {1.0, 0.0, 0.0};
@@ -25,10 +28,10 @@ void display(void) {
 
     //Lights
     GLfloat whiteDiffuseLight[] = {0.0, 1.0, 1.0};
-    GLfloat lightPosition[] = {0.0,0.0,1.0,1.0};
+    GLfloat lightPosition[] = {sin(lightAngle),cos(lightAngle),1.0,1.0};
     glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteDiffuseLight);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    
+    lightAngle += 0.1;
 
     //Ground
     glColor3f(.9,.9,.9);

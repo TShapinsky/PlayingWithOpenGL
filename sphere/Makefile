@@ -1,2 +1,2 @@
 sphere: sphere.c
-	gcc sphere.c -lglut -lGL -lGLU -o sphere
+	gcc sphere.c -lglut -lGL -lGLU -lm -o sphere
